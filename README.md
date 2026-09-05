@@ -309,26 +309,23 @@ The page allows you to:
 3. Send the image to the extraction API.
 4. View the returned JSON response.
 
+
 ## Testing
 
-Initial tests can be performed using cheque images stored under:
+A sample test has been performed using a real cheque image.
 
-```text
-tests/images/
-```
+The test result is recorded in:
 
-Test results are recorded in:
-
-```text
 tests/test_results.xlsx
-```
 
-The acceptance test requires testing the service with at least 30 real cheque images.
+The test table contains the expected value, model output, and comparison result for the extracted fields.
+
+The acceptance criteria require testing with at least 30 real cheque images in the final validation phase.
 
 The target accuracy for the following fields is at least 90%:
 
-* `sayad_id`
-* `amount_digits`
+- `sayad_id`
+- `amount_digits`
 
 ## Important Notes
 
