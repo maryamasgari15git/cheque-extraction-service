@@ -1,0 +1,31 @@
+# Environment variables
+.env
+
+# Virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test/cache files
+.pytest_cache/
+
+# Logs
+*.log
+# Temporary test scripts
+list_models.py
+test_gemini.py
+test_schema.py
+
+# Excel temporary files
+~$*.xlsx

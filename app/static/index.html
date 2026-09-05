@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheque Extraction</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        input,
+        button {
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f5f5f5;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Cheque Extraction Service</h1>
+
+    <div class="section">
+        <label for="apiKey">API Key:</label>
+        <br>
+        <input
+            type="password"
+            id="apiKey"
+            placeholder="Enter API Key"
+        >
+    </div>
+
+    <div class="section">
+        <label for="file">Cheque Image:</label>
+        <br>
+        <input
+            type="file"
+            id="file"
+            accept="image/jpeg,image/png,application/pdf"
+        >
+    </div>
+
+    <button onclick="extractCheque()">
+        Extract Information
+    </button>
+
+    <div id="status"></div>
+
+    <div id="result"></div>
+
+    <script>
+        async function extractCheque() {
+
+            const apiKey = document.getElementById("apiKey").value;
+            const fileInput = document.getElementById("file");
+            const status = document.getElementById("status");
+            const result = document.getElementById("result");
+
+            result.textContent = "";
+            status.textContent = "";
+
+            if (!apiKey) {
+                status.textContent = "Please enter API Key.";
+                return;
+            }
+
+            if (!fileInput.files.length) {
+                status.textContent = "Please select a cheque image.";
+                return;
+            }
+
+            const file = fileInput.files[0];
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            status.textContent = "Processing...";
+
+            try {
+
+                const response = await fetch(
+                    "/api/v1/cheque/extract",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "X-API-Key": apiKey
+                        },
+
+                        body: formData
+                    }
+                );
+
+                const data = await response.json();
+
+                result.textContent =
+                    JSON.stringify(data, null, 2);
+
+                if (response.ok) {
+                    status.textContent = "Extraction completed.";
+                } else {
+                    status.textContent =
+                        "Request failed. HTTP " + response.status;
+                }
+
+            } catch (error) {
+
+                status.textContent =
+                    "Connection error.";
+
+                result.textContent =
+                    error.toString();
+            }
+        }
+    </script>
+
+</body>
+</html>
